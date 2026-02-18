@@ -1,37 +1,13 @@
-@use '@angular/material' as mat;
-
-@include mat.core();
-
-$agri-primary: mat.define-theme((color: (theme-type: light,
-                primary: mat.$green-palette,
-                tertiary: mat.$amber-palette,
-            ),
-            typography: (brand-family: 'Roboto, sans-serif',
-            ),
-            density: (scale: 0,
-            )));
-
-html {
-    @include mat.all-component-themes($agri-primary);
-}
-
-* {
-    box-sizing: border-box;
-}
-
 body {
     margin: 0;
     font-family: Roboto, 'Helvetica Neue', sans-serif;
-    background-color: #f1f8e9;
+    background-color: #ffff;
     color: #333;
 }
 
 .page-container {
     max-width: 1100px;
-    margin: 0 auto;
     padding: 24px 16px;
 }
 
-.mat-mdc-card {
-    margin-bottom: 20px;
-}
+
