@@ -1,0 +1,122 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1 class="page-title">
+      <mat-icon class="title-icon">flag</mat-icon>
+      Objectifs Mensuels &amp; KPIs
+    </h1>
+    <button mat-raised-button color="primary" (click)="ajouterObjectif()">
+      <mat-icon>add</mat-icon> Ajouter Objectif
+    </button>
+  </div>
+
+  <!-- Objectifs Cards -->
+  <div class="objectifs-grid">
+    @for (objectif of objectifs(); track objectif.id) {
+    <mat-card class="objectif-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="card-icon">track_changes</mat-icon>
+          Objectif {{ objectif.id }}
+        </mat-card-title>
+        <mat-card-subtitle>
+          <mat-chip [color]="getProgressColor(objectif.progression)" highlighted>
+            {{ objectif.progression }}% réalisé
+          </mat-chip>
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titre de l'objectif</mat-label>
+          <input matInput [(ngModel)]="objectif.titre" placeholder="Ex: Augmenter le rendement">
+          <mat-icon matSuffix>edit</mat-icon>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Détails</mat-label>
+          <textarea matInput [(ngModel)]="objectif.details" rows="3"
+            placeholder="Décrivez les actions à entreprendre..."></textarea>
+        </mat-form-field>
+
+        <div class="progress-section">
+          <div class="progress-header">
+            <span class="progress-label">Progression</span>
+            <span class="progress-value">{{ objectif.progression }}%</span>
+          </div>
+          <mat-progress-bar [mode]="'determinate'" [value]="objectif.progression"
+            [color]="getProgressColor(objectif.progression)" class="progress-bar">
+          </mat-progress-bar>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    }
+  </div>
+
+  <mat-divider class="section-divider"></mat-divider>
+
+  <!-- KPIs Section -->
+  <div class="kpis-section">
+    <div class="section-header">
+      <h2 class="section-title">
+        <mat-icon class="title-icon">bar_chart</mat-icon>
+        Indicateurs de Performance (KPIs)
+      </h2>
+      <button mat-raised-button color="accent" (click)="ajouterKPI()">
+        <mat-icon>add</mat-icon> Ajouter KPI
+      </button>
+    </div>
+
+    <mat-card class="table-card">
+      <mat-card-content>
+        <div class="table-responsive">
+          <table mat-table [dataSource]="kpis()" class="kpi-table">
+
+            <!-- Indicateur Column -->
+            <ng-container matColumnDef="indicateur">
+              <th mat-header-cell *matHeaderCellDef>Indicateur</th>
+              <td mat-cell *matCellDef="let kpi">
+                <mat-form-field appearance="outline" class="table-field">
+                  <input matInput [(ngModel)]="kpi.indicateur" placeholder="Indicateur">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Objectif Mensuel Column -->
+            <ng-container matColumnDef="objectifMensuel">
+              <th mat-header-cell *matHeaderCellDef>Objectif Mensuel</th>
+              <td mat-cell *matCellDef="let kpi">
+                <mat-form-field appearance="outline" class="table-field">
+                  <input matInput [(ngModel)]="kpi.objectifMensuel" (input)="calculerPourcentage(kpi)"
+                    placeholder="Objectif">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Réalisé Column -->
+            <ng-container matColumnDef="realise">
+              <th mat-header-cell *matHeaderCellDef>Réalisé</th>
+              <td mat-cell *matCellDef="let kpi">
+                <mat-form-field appearance="outline" class="table-field">
+                  <input matInput [(ngModel)]="kpi.realise" (input)="calculerPourcentage(kpi)" placeholder="Réalisé">
+                </mat-form-field>
+              </td>
+            </ng-container>
+
+            <!-- Pourcentage Column -->
+            <ng-container matColumnDef="pourcentage">
+              <th mat-header-cell *matHeaderCellDef>% Réalisation</th>
+              <td mat-cell *matCellDef="let kpi">
+                <mat-chip [color]="kpi.pourcentage ? 'primary' : undefined" highlighted>
+                  {{ kpi.pourcentage || '—' }}
+                </mat-chip>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
