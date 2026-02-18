@@ -1,64 +1,20 @@
 <div class="page-container">
-    <div class="page-header">
-        <h1 class="page-title">
-            <mat-icon class="title-icon">warning</mat-icon>
-            Défis &amp; Obstacles
-        </h1>
-        <button mat-raised-button color="warn" (click)="ajouterDefi()">
-            <mat-icon>add</mat-icon> Ajouter Défi
-        </button>
-    </div>
-
-    <mat-accordion class="defis-accordion" multi>
-        @for (defi of defis(); track defi.id) {
-        <mat-expansion-panel class="defi-panel">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    <mat-icon class="panel-icon">report_problem</mat-icon>
-                    {{ defi.titre || 'Nouveau défi' }}
-                </mat-panel-title>
-                <mat-panel-description>
-                    <mat-icon class="date-icon">schedule</mat-icon>
-                    {{ defi.date }}
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-
-            <div class="panel-content">
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Titre du défi</mat-label>
-                    <input matInput [(ngModel)]="defi.titre" placeholder="Ex: Sécheresse prolongée">
-                    <mat-icon matSuffix>edit</mat-icon>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Date</mat-label>
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="defi.date">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Description du défi</mat-label>
-                    <textarea matInput [(ngModel)]="defi.description" rows="3"
-                        placeholder="Décrivez le problème rencontré..."></textarea>
-                    <mat-icon matSuffix>description</mat-icon>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Solution Appliquée</mat-label>
-                    <textarea matInput [(ngModel)]="defi.solutionAppliquee" rows="3"
-                        placeholder="Quelle solution avez-vous mise en place ?"></textarea>
-                    <mat-icon matSuffix>build</mat-icon>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Résultat Obtenu</mat-label>
-                    <textarea matInput [(ngModel)]="defi.resultat" rows="2"
-                        placeholder="Quel a été le résultat ?"></textarea>
-                    <mat-icon matSuffix>check_circle</mat-icon>
-                </mat-form-field>
-            </div>
-        </mat-expansion-panel>
-        }
-    </mat-accordion>
+  <div class="page-header">
+    <h1 class="page-title">
+      Défis &amp; Obstacles
+    </h1>
+    <button>Ajouter Défi</button>
+  </div>
+  <mat-accordion>
+    @for (defi of defis; track defi.id) {
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title> {{ defi.titre }}</mat-panel-title>
+          <mat-panel-description> {{ defi.date }}</mat-panel-description>
+        </mat-expansion-panel-header>
+        <p>{{ defi.description }}</p>
+        <p>{{ defi.solutionAppliquee }}</p>
+      </mat-expansion-panel>
+    }
+  </mat-accordion>
 </div>

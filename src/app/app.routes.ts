@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
-import { ObjectifsComponent } from './components/objectifs/objectifs.component';
-import { EvenementsComponent } from './components/evenements/evenements.component';
-import { DefisComponent } from './components/defis/defis.component';
+import { ObjectifsComponent } from './pages/objectifs/objectifs.component';
+import { EvenementsComponent } from './pages/evenements/evenements.component';
+import { DefisComponent } from './pages/defis/defis.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/objectifs', pathMatch: 'full' },
