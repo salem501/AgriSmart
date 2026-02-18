@@ -7,6 +7,15 @@
     gap: 12px;
 }
 
+.defi-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-defi {
+  width: 250px;
+}
+
 .page-title {
     display: flex;
     align-items: center;

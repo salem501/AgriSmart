@@ -43,10 +43,19 @@ export class DefisComponent implements OnInit {
 
   defis: Defi[] = [];
 
+  showAddDefiPage = false;
+
   ngOnInit(): void {
     this.loadDefisList();
   }
 
+  showAddDefiForm(){
+    this.showAddDefiPage = true;
+  }
+
+  showDefiList() {
+    this.showAddDefiPage = false;
+  }
   private loadDefisList() {
     return this.defiService.getUsers().subscribe(defis =>{
       this.defis = defis;
