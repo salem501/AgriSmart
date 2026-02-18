@@ -1,5 +1,39 @@
-<app-navbar></app-navbar>
+<mat-drawer-container class="layout-container">
 
-<div class="main-content">
-  <router-outlet />
-</div>
+  <!-- Sidebar -->
+  <mat-drawer
+    #drawer
+    class="sidebar"
+    [mode]="isMobile ? 'over' : 'side'"
+    [opened]="!isMobile">
+
+    <div class="sidebar-header">
+      <h2>My App</h2>
+    </div>
+
+    <mat-nav-list>
+      <a mat-list-item routerLink="/objectifs">Objectifs</a>
+      <a mat-list-item routerLink="/evenements">Evenements</a>
+      <a mat-list-item routerLink="/defis">Defis</a>
+    </mat-nav-list>
+
+  </mat-drawer>
+
+  <!-- Main Content -->
+  <mat-drawer-content>
+
+    <!-- Top Toolbar -->
+    <mat-toolbar color="primary" class="toolbar">
+      <button mat-icon-button (click)="drawer.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="app-title">Application</span>
+    </mat-toolbar>
+
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+
+  </mat-drawer-content>
+
+</mat-drawer-container>

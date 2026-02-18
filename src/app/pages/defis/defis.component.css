@@ -1,75 +1,63 @@
-.page-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 24px;
-    flex-wrap: wrap;
-    gap: 12px;
+.layout-container {
+  height: 100vh;
+  background: #f5f7fa;
 }
 
-.defi-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.date-defi {
+.sidebar {
   width: 250px;
+  background: #1e293b;
+  color: #ffffff;
 }
 
-.page-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.6rem;
-    font-weight: 600;
-    color: #b71c1c;
-    margin: 0;
+.sidebar-header {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: 600;
+  background: #0f172a;
+  text-align: center;
 }
 
-.title-icon {
-    font-size: 2rem;
-    height: 2rem;
-    width: 2rem;
-    color: #c62828;
+mat-nav-list a {
+  color: #e2e8f0;
+  font-weight: 500;
+  border-radius: 6px;
+  margin: 4px 8px;
 }
 
-.defis-accordion {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+mat-nav-list a:hover {
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.defi-panel {
-    border-radius: 12px !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
-    border-left: 5px solid #e53935;
-    overflow: hidden;
+.toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  gap: 16px;
 }
 
-.defi-panel.mat-expanded {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14) !important;
+.app-title {
+  font-size: 18px;
+  font-weight: 500;
 }
 
-.panel-icon {
-    margin-right: 8px;
-    color: #e53935;
-    vertical-align: middle;
+.content {
+  padding: 24px;
+  min-height: calc(100vh - 64px);
+  background: #ffffff;
+  border-radius: 12px;
+  margin: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.date-icon {
-    margin-right: 4px;
-    font-size: 16px;
-    height: 16px;
-    width: 16px;
-    vertical-align: middle;
-    color: #888;
-}
+/* Responsive */
+@media (max-width: 768px) {
+  .content {
+    margin: 8px;
+    padding: 16px;
+  }
 
-.panel-content {
-    padding: 8px 0;
-}
-
-.full-width {
-    width: 100%;
-    margin-top: 12px;
+  .sidebar {
+    width: 220px;
+  }
 }
