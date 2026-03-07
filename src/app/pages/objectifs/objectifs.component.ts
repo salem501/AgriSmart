@@ -1,15 +1,14 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatTableModule } from '@angular/material/table';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatChipsModule } from '@angular/material/chips';
+import { CardModule } from 'primeng/card';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { ProgressBar } from 'primeng/progressbar';
+import { ButtonModule } from 'primeng/button';
+import { DividerModule } from 'primeng/divider';
+import { TagModule } from 'primeng/tag';
+import { FloatLabelModule } from 'primeng/floatlabel';
 import { Objectif, KPI } from '../../models/objectif.model';
 
 @Component({
@@ -17,15 +16,14 @@ import { Objectif, KPI } from '../../models/objectif.model';
     imports: [
         CommonModule,
         FormsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatProgressBarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTableModule,
-        MatDividerModule,
-        MatChipsModule
+        CardModule,
+        InputTextModule,
+        TextareaModule,
+        ProgressBar,
+        ButtonModule,
+        DividerModule,
+        TagModule,
+        FloatLabelModule
     ],
     templateUrl: './objectifs.component.html',
     styleUrl: './objectifs.component.css'
@@ -43,8 +41,6 @@ export class ObjectifsComponent {
         { id: 3, indicateur: 'Taux de qualité (%)', objectifMensuel: '95', realise: '28.5', pourcentage: '30%' },
         { id: 4, indicateur: 'Surface traitée (ha)', objectifMensuel: '', realise: '', pourcentage: '' }
     ]);
-
-    protected displayedColumns = ['indicateur', 'objectifMensuel', 'realise', 'pourcentage'];
 
     private objectifCounter = 4;
     private kpiCounter = 5;
@@ -83,9 +79,9 @@ export class ObjectifsComponent {
         }
     }
 
-    getProgressColor(progression: number): 'primary' | 'accent' | 'warn' {
-        if (progression >= 75) return 'primary';
-        if (progression >= 40) return 'accent';
+    getTagSeverity(progression: number): 'success' | 'info' | 'warn' | 'danger' | 'secondary' | 'contrast' | undefined {
+        if (progression >= 75) return 'success';
+        if (progression >= 40) return 'info';
         return 'warn';
     }
 }

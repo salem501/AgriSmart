@@ -1,38 +1,26 @@
-import {Component, inject, OnInit} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {MatCardModule} from '@angular/material/card';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import {MatButtonModule} from '@angular/material/button';
-import {MatIconModule} from '@angular/material/icon';
-import {
-  MatAccordion,
-  MatExpansionModule,
-  MatExpansionPanel,
-  MatExpansionPanelDescription,
-  MatExpansionPanelTitle
-} from '@angular/material/expansion';
-import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatNativeDateModule} from '@angular/material/core';
-import {MatChipsModule} from '@angular/material/chips';
-import {Defi} from '../../models/defi.model';
-import {DefiService} from '../../services/defi/defi-service';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { AccordionModule } from 'primeng/accordion';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { ButtonModule } from 'primeng/button';
+import { DatePickerModule } from 'primeng/datepicker';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { Defi } from '../../models/defi.model';
+import { DefiService } from '../../services/defi/defi-service';
 
 @Component({
   selector: 'app-defis',
   imports: [
     CommonModule,
     FormsModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatExpansionModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatChipsModule
+    AccordionModule,
+    InputTextModule,
+    TextareaModule,
+    ButtonModule,
+    DatePickerModule,
+    FloatLabelModule
   ],
   templateUrl: './defis.component.html',
   standalone: true,
@@ -49,17 +37,17 @@ export class DefisComponent implements OnInit {
     this.loadDefisList();
   }
 
-  showAddDefiForm(){
+  showAddDefiForm() {
     this.showAddDefiPage = true;
   }
 
   showDefiList() {
     this.showAddDefiPage = false;
   }
+
   private loadDefisList() {
-    return this.defiService.getUsers().subscribe(defis =>{
+    return this.defiService.getUsers().subscribe(defis => {
       this.defis = defis;
     });
-
   }
 }

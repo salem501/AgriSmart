@@ -1,45 +1,46 @@
 <div class="page-container">
     <div class="page-header">
         <h1 class="page-title">
-            <mat-icon class="title-icon">event</mat-icon>
+            <i class="fa-solid fa-calendar title-icon"></i>
             Événements &amp; Activités
         </h1>
-        <button mat-raised-button color="primary" (click)="ajouterEvenement()">
-            <mat-icon>add</mat-icon> Ajouter Événement
-        </button>
+        <p-button label="Ajouter Événement" icon="fa-solid fa-plus" (onClick)="ajouterEvenement()" />
     </div>
 
     <div class="evenements-grid">
         @for (evenement of evenements(); track evenement.id) {
-        <mat-card class="evenement-card">
-            <mat-card-header>
-                <mat-card-title>
-                    <mat-icon class="card-icon">calendar_today</mat-icon>
-                    {{ evenement.semaine }}
-                </mat-card-title>
-            </mat-card-header>
+        <p-card styleClass="evenement-card">
+            <ng-template #header>
+                <div class="card-header-content">
+                    <i class="fa-solid fa-calendar-plus card-icon"></i>
+                    <span class="card-title">{{ evenement.semaine }}</span>
+                </div>
+            </ng-template>
 
-            <mat-card-content>
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Date</mat-label>
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="evenement.date">
-                    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
+            <div class="field-group">
+                <p-floatlabel variant="on">
+                    <p-datepicker id="date-{{evenement.id}}" [(ngModel)]="evenement.date"
+                        [showIcon]="true" dateFormat="yy-mm-dd" styleClass="full-width" />
+                    <label for="date-{{evenement.id}}">Date</label>
+                </p-floatlabel>
+            </div>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Nom de l'événement</mat-label>
-                    <input matInput [(ngModel)]="evenement.nom" placeholder="Ex: Semis de printemps">
-                    <mat-icon matSuffix>agriculture</mat-icon>
-                </mat-form-field>
+            <div class="field-group">
+                <p-floatlabel variant="on">
+                    <input pInputText id="nom-{{evenement.id}}" [(ngModel)]="evenement.nom"
+                        placeholder="Ex: Semis de printemps" class="full-width" />
+                    <label for="nom-{{evenement.id}}">Nom de l'événement</label>
+                </p-floatlabel>
+            </div>
 
-                <mat-form-field appearance="outline" class="full-width">
-                    <mat-label>Détails</mat-label>
-                    <textarea matInput [(ngModel)]="evenement.details" rows="3"
-                        placeholder="Décrivez l'événement..."></textarea>
-                </mat-form-field>
-            </mat-card-content>
-        </mat-card>
+            <div class="field-group">
+                <p-floatlabel variant="on">
+                    <textarea pTextarea id="details-{{evenement.id}}" [(ngModel)]="evenement.details"
+                        rows="3" class="full-width"></textarea>
+                    <label for="details-{{evenement.id}}">Détails</label>
+                </p-floatlabel>
+            </div>
+        </p-card>
         }
     </div>
 </div>

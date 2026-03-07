@@ -19,9 +19,7 @@
 }
 
 .title-icon {
-  font-size: 2rem;
-  height: 2rem;
-  width: 2rem;
+  font-size: 1.5rem;
   color: #388e3c;
 }
 
@@ -32,30 +30,54 @@
   margin-bottom: 32px;
 }
 
-.objectif-card {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+:host ::ng-deep .objectif-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
 }
 
-.objectif-card:hover {
+:host ::ng-deep .objectif-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f0fdf4, #ffffff);
+  border-bottom: 1px solid #e8f5e9;
+}
+
+.card-title-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1b5e20;
 }
 
 .card-icon {
-  vertical-align: middle;
-  margin-right: 6px;
   color: #43a047;
+  font-size: 1.2rem;
+}
+
+.field-group {
+  margin-top: 16px;
 }
 
 .full-width {
   width: 100%;
-  margin-top: 12px;
 }
 
 .progress-section {
-  margin-top: 8px;
+  margin-top: 16px;
 }
 
 .progress-header {
@@ -76,13 +98,13 @@
   color: #2e7d32;
 }
 
-.progress-bar {
-  height: 10px;
+:host ::ng-deep .custom-progressbar .p-progressbar-value {
   border-radius: 5px;
 }
 
-.section-divider {
-  margin: 32px 0;
+:host ::ng-deep .custom-progressbar {
+  height: 10px;
+  border-radius: 5px;
 }
 
 .kpis-section {
@@ -99,7 +121,9 @@
 }
 
 .table-card {
-  border-radius: 12px !important;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 
@@ -109,15 +133,37 @@
 
 .kpi-table {
   width: 100%;
+  border-collapse: collapse;
 }
 
-.table-field {
-  width: 160px;
-  margin: 4px 0;
-}
-
-.mat-mdc-header-cell {
+.kpi-table thead th {
   font-weight: 700;
   color: #2e7d32;
   font-size: 0.9rem;
+  padding: 14px 16px;
+  text-align: left;
+  background: #f0fdf4;
+  border-bottom: 2px solid #c8e6c9;
+}
+
+.kpi-table tbody tr {
+  transition: background 0.15s ease;
+}
+
+.kpi-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.kpi-table tbody tr:hover {
+  background: #f0fdf4;
+}
+
+.kpi-table tbody td {
+  padding: 10px 16px;
+  border-bottom: 1px solid #e8f5e9;
+  vertical-align: middle;
+}
+
+.table-input {
+  width: 140px;
 }

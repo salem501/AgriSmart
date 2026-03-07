@@ -1,7 +1,7 @@
 body {
     margin: 0;
-    font-family: Roboto, 'Helvetica Neue', sans-serif;
-    background-color: #ffff;
+    font-family: 'Inter', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    background-color: #f5f7fa;
     color: #333;
 }
 
@@ -9,5 +9,3 @@ body {
     max-width: 1100px;
     padding: 24px 16px;
 }
-
-

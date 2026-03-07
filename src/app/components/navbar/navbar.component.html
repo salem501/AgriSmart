@@ -1,14 +1,17 @@
-<mat-toolbar color="primary" class="app-toolbar">
-    <mat-icon class="brand-icon">eco</mat-icon>
+<p-toolbar styleClass="app-toolbar">
+  <ng-template #start>
+    <i class="fa-solid fa-leaf brand-icon"></i>
     <span class="brand-name">AgriSmart</span>
-    <span class="spacer"></span>
-    <a mat-button routerLink="/objectifs" routerLinkActive="active-link">
-        <mat-icon>flag</mat-icon> Objectifs
+  </ng-template>
+  <ng-template #end>
+    <a routerLink="/objectifs" routerLinkActive="active-link" class="nav-link">
+      <i class="fa-solid fa-flag"></i> Objectifs
     </a>
-    <a mat-button routerLink="/evenements" routerLinkActive="active-link">
-        <mat-icon>event</mat-icon> Événements
+    <a routerLink="/evenements" routerLinkActive="active-link" class="nav-link">
+      <i class="fa-solid fa-calendar"></i> Événements
     </a>
-    <a mat-button routerLink="/defis" routerLinkActive="active-link">
-        <mat-icon>warning</mat-icon> Défis
+    <a routerLink="/defis" routerLinkActive="active-link" class="nav-link">
+      <i class="fa-solid fa-triangle-exclamation"></i> Défis
     </a>
-</mat-toolbar>
+  </ng-template>
+</p-toolbar>
