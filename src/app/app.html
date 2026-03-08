@@ -6,12 +6,9 @@
   <div class="main-area" [class.sidebar-open]="sidebarVisible && !isMobile">
     <p-button
       icon="fa-solid fa-bars"
-      [text]="true"
       [rounded]="true"
-      [raised]="true"
       severity="contrast"
-      (onClick)="toggleSidebar()"
-      styleClass="sidebar-toggle-btn"/>
+      (onClick)="toggleSidebar()"/>
     <div class="content">
       <router-outlet></router-outlet>
     </div>
