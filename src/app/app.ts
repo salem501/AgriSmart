@@ -1,20 +1,18 @@
 import { Component, HostListener, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { DrawerModule } from 'primeng/drawer';
+import { RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RippleModule } from 'primeng/ripple';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @Component({
   selector: 'app-root',
   imports: [
     RouterOutlet,
-    RouterLink,
-    RouterLinkActive,
-    DrawerModule,
     ButtonModule,
     ToolbarModule,
-    RippleModule
+    RippleModule,
+    SidebarComponent
   ],
   standalone: true,
   templateUrl: './app.html',

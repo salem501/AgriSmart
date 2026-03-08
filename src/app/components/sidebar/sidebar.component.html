@@ -1,0 +1,31 @@
+<p-drawer
+  [visible]="visible"
+  (visibleChange)="onVisibleChange($event)"
+  [modal]="isMobile"
+  [dismissible]="isMobile"
+  [showCloseIcon]="isMobile"
+  styleClass="sidebar-drawer">
+
+  <ng-template #header>
+    <div class="sidebar-header">
+      <i class="fa-solid fa-leaf sidebar-logo"></i>
+      <span class="sidebar-brand">AgriSmart</span>
+    </div>
+  </ng-template>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/objectifs" routerLinkActive="active-link" class="nav-item" (click)="onItemClick()">
+      <i class="fa-solid fa-flag"></i>
+      <span>Objectifs</span>
+    </a>
+    <a routerLink="/evenements" routerLinkActive="active-link" class="nav-item" (click)="onItemClick()">
+      <i class="fa-solid fa-calendar"></i>
+      <span>Événements</span>
+    </a>
+    <a routerLink="/defis" routerLinkActive="active-link" class="nav-item" (click)="onItemClick()">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <span>Défis</span>
+    </a>
+  </nav>
+
+</p-drawer>

@@ -1,57 +1,19 @@
 <div class="layout-container">
-
-  <!-- Sidebar -->
-  <p-drawer
+  <app-sidebar
     [(visible)]="sidebarVisible"
-    [modal]="isMobile"
-    [dismissible]="isMobile"
-    [showCloseIcon]="isMobile"
-    styleClass="sidebar-drawer">
-
-    <ng-template #header>
-      <div class="sidebar-header">
-        <i class="fa-solid fa-leaf sidebar-logo"></i>
-        <span class="sidebar-brand">AgriSmart</span>
-      </div>
-    </ng-template>
-
-    <nav class="sidebar-nav">
-      <a routerLink="/objectifs" routerLinkActive="active-link" class="nav-item" (click)="isMobile && toggleSidebar()">
-        <i class="fa-solid fa-flag"></i>
-        <span>Objectifs</span>
-      </a>
-      <a routerLink="/evenements" routerLinkActive="active-link" class="nav-item" (click)="isMobile && toggleSidebar()">
-        <i class="fa-solid fa-calendar"></i>
-        <span>Événements</span>
-      </a>
-      <a routerLink="/defis" routerLinkActive="active-link" class="nav-item" (click)="isMobile && toggleSidebar()">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        <span>Défis</span>
-      </a>
-    </nav>
-
-  </p-drawer>
-
-  <!-- Main Content -->
+    [isMobile]="isMobile">
+  </app-sidebar>
   <div class="main-area" [class.sidebar-open]="sidebarVisible && !isMobile">
-
-    <!-- Top Toolbar -->
-    <p-toolbar styleClass="app-toolbar">
-      <ng-template #start>
-        <p-button
-          icon="fa-solid fa-bars"
-          [text]="true"
-          severity="contrast"
-          (onClick)="toggleSidebar()"
-          styleClass="menu-toggle-btn" />
-        <span class="app-title">{{ title() }}</span>
-      </ng-template>
-    </p-toolbar>
-
+    <p-button
+      icon="fa-solid fa-bars"
+      [text]="true"
+      [rounded]="true"
+      [raised]="true"
+      severity="contrast"
+      (onClick)="toggleSidebar()"
+      styleClass="sidebar-toggle-btn"/>
     <div class="content">
       <router-outlet></router-outlet>
     </div>
-
   </div>
-
 </div>
