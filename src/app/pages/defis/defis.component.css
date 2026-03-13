@@ -73,3 +73,7 @@
   border-radius: 8px;
   overflow: hidden;
 }
+
+:host ::ng-deep .ag-row {
+  cursor: pointer;
+}
