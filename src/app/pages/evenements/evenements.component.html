@@ -1,46 +1,69 @@
 <div class="page-container">
-    <div class="page-header">
-        <h1 class="page-title">
-            <i class="fa-solid fa-calendar title-icon"></i>
-            Événements &amp; Activités
-        </h1>
-        <p-button label="Ajouter Événement" icon="fa-solid fa-plus" (onClick)="ajouterEvenement()" />
+  @if (viewMode === 'add' || viewMode === 'edit') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i [class]="viewMode === 'add' ? 'fa-solid fa-calendar-plus title-icon' : 'fa-solid fa-pen title-icon'"></i>
+      {{ viewMode === 'add' ? 'Ajouter Evenement' : 'Modifier Evenement' }}
+    </h1>
+  </div>
+  <div class="evenement-form">
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="nom" class="full-width" [(ngModel)]="selectedEvenement!.nom" />
+        <label for="nom">Nom de l'événement</label>
+      </p-floatlabel>
     </div>
-
-    <div class="evenements-grid">
-        @for (evenement of evenements(); track evenement.id) {
-        <p-card styleClass="evenement-card">
-            <ng-template #header>
-                <div class="card-header-content">
-                    <i class="fa-solid fa-calendar-plus card-icon"></i>
-                    <span class="card-title">{{ evenement.semaine }}</span>
-                </div>
-            </ng-template>
-
-            <div class="field-group">
-                <p-floatlabel variant="on">
-                    <p-datepicker id="date-{{evenement.id}}" [(ngModel)]="evenement.date"
-                        [showIcon]="true" dateFormat="yy-mm-dd" styleClass="full-width" />
-                    <label for="date-{{evenement.id}}">Date</label>
-                </p-floatlabel>
-            </div>
-
-            <div class="field-group">
-                <p-floatlabel variant="on">
-                    <input pInputText id="nom-{{evenement.id}}" [(ngModel)]="evenement.nom"
-                        placeholder="Ex: Semis de printemps" class="full-width" />
-                    <label for="nom-{{evenement.id}}">Nom de l'événement</label>
-                </p-floatlabel>
-            </div>
-
-            <div class="field-group">
-                <p-floatlabel variant="on">
-                    <textarea pTextarea id="details-{{evenement.id}}" [(ngModel)]="evenement.details"
-                        rows="3" class="full-width"></textarea>
-                    <label for="details-{{evenement.id}}">Détails</label>
-                </p-floatlabel>
-            </div>
-        </p-card>
-        }
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <p-datepicker id="date" [showIcon]="true" dateFormat="yy-mm-dd" styleClass="full-width" [(ngModel)]="selectedEvenement!.date" />
+        <label for="date">Date</label>
+      </p-floatlabel>
     </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <textarea pTextarea id="details" rows="6" class="full-width" [(ngModel)]="selectedEvenement!.details"></textarea>
+        <label for="details">Détails</label>
+      </p-floatlabel>
+    </div>
+  </div>
+  <div class="form-actions" style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showEvenementsList()" />
+    <p-button label="Sauvegarder" icon="fa-solid fa-check" (onClick)="saveEvenement()" />
+  </div>
+  } @else if (viewMode === 'details') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fa-solid fa-circle-info title-icon"></i>
+      Détails de l'événement: {{ selectedEvenement?.nom }}
+    </h1>
+  </div>
+  <div class="evenement-details" style="display: flex; flex-direction: column; gap: 1.5rem; background: var(--surface-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--surface-border);">
+    <div><strong style="color: var(--text-color-secondary);">Date:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedEvenement?.date }}</span></div>
+    <div><strong style="color: var(--text-color-secondary);">Détails:</strong><div style="margin-top: 0.5rem; color: var(--text-color); white-space: pre-wrap;">{{ selectedEvenement?.details }}</div></div>
+  </div>
+  <div class="form-actions" style="margin-top: 1rem; display: flex; gap: 1rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showEvenementsList()" />
+    <p-button label="Modifier" icon="fa-solid fa-pen" severity="info" (onClick)="editEvenement()" styleClass="p-button-outlined" />
+    <p-button label="Supprimer" icon="fa-solid fa-trash" severity="danger" (onClick)="deleteEvenement()" styleClass="p-button-outlined" />
+  </div>
+  } @else {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fa-solid fa-calendar title-icon"></i>
+      Événements &amp; Activités
+    </h1>
+    <p-button label="Ajouter Événement" icon="fa-solid fa-plus" (onClick)="showAddEvenementForm()" />
+  </div>
+  <div class="grid-container" style="height: 600px; width: 100%; margin-top: 1rem;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [theme]="theme"
+      [rowData]="evenements"
+      [columnDefs]="colDefs"
+      [defaultColDef]="defaultColDef"
+      (rowClicked)="onRowClicked($event)"
+      [rowSelection]="'single'">
+    </ag-grid-angular>
+  </div>
+  }
 </div>
