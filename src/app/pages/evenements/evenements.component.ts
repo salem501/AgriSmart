@@ -43,8 +43,8 @@ export class EvenementsComponent implements OnInit {
 
     colDefs: ColDef[] = [
         { field: 'date', headerName: 'Date', width: 150 },
-        { field: 'nom', headerName: 'Nom', flex: 1, minWidth: 200, wrapText: true, autoHeight: true },
-        { field: 'details', headerName: 'Détails', flex: 1, minWidth: 200, wrapText: true, autoHeight: true }
+        { field: 'nom', headerName: 'Nom', flex: 1, minWidth: 200 },
+        { field: 'details', headerName: 'Détails', flex: 1, minWidth: 200 }
     ];
 
     defaultColDef = {

@@ -43,9 +43,9 @@ export class DefisComponent implements OnInit {
   colDefs: ColDef[] = [
     { field: 'titre', headerName: 'Titre', minWidth: 150 },
     { field: 'date', headerName: 'Date', width: 150 },
-    { field: 'description', headerName: 'Description', flex: 1, minWidth: 200, wrapText: true, autoHeight: true },
-    { field: 'solutionAppliquee', headerName: 'Solution Appliquée', flex: 1, minWidth: 200, wrapText: true, autoHeight: true },
-    { field: 'resultat', headerName: 'Résultat', flex: 1, minWidth: 150, wrapText: true, autoHeight: true }
+    { field: 'description', headerName: 'Description', flex: 1, minWidth: 200 },
+    { field: 'solutionAppliquee', headerName: 'Solution Appliquée', flex: 1, minWidth: 200 },
+    { field: 'resultat', headerName: 'Résultat', flex: 1, minWidth: 150 }
   ];
 
   defaultColDef = {
