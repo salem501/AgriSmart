@@ -35,7 +35,8 @@ export class DefisComponent implements OnInit {
 
   defis: Defi[] = [];
 
-  showAddDefiPage = false;
+  viewMode: 'list' | 'add' | 'details' | 'edit' = 'list';
+  selectedDefi: Defi | null = null;
 
   theme = themeQuartz;
 
@@ -57,11 +58,47 @@ export class DefisComponent implements OnInit {
   }
 
   showAddDefiForm() {
-    this.showAddDefiPage = true;
+    this.selectedDefi = { id: 0, titre: '', date: '', description: '', solutionAppliquee: '', resultat: '' };
+    this.viewMode = 'add';
   }
 
   showDefiList() {
-    this.showAddDefiPage = false;
+    this.viewMode = 'list';
+    this.selectedDefi = null;
+  }
+
+  onRowClicked(event: any) {
+    this.selectedDefi = { ...event.data };
+    this.viewMode = 'details';
+  }
+
+  editDefi() {
+    this.viewMode = 'edit';
+  }
+
+  deleteDefi() {
+    if (this.selectedDefi && this.selectedDefi.id) {
+      this.defiService.deleteDefi(this.selectedDefi.id).subscribe(() => {
+        this.loadDefisList();
+        this.showDefiList();
+      });
+    }
+  }
+
+  saveDefi() {
+    if (!this.selectedDefi) return;
+
+    if (this.viewMode === 'add') {
+      this.defiService.addDefi(this.selectedDefi).subscribe(() => {
+        this.loadDefisList();
+        this.showDefiList();
+      });
+    } else if (this.viewMode === 'edit') {
+      this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
+        this.loadDefisList();
+        this.showDefiList();
+      });
+    }
   }
 
   private loadDefisList() {

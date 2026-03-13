@@ -16,4 +16,27 @@ export class DefiService {
     return of(this.mockDefis);
   }
 
+  addDefi(defi: Defi): Observable<Defi> {
+    const newId = this.mockDefis.length > 0 ? Math.max(...this.mockDefis.map(d => d.id)) + 1 : 1;
+    const newDefi = { ...defi, id: newId };
+    this.mockDefis.push(newDefi);
+    return of(newDefi);
+  }
+
+  updateDefi(defi: Defi): Observable<Defi> {
+    const index = this.mockDefis.findIndex(d => d.id === defi.id);
+    if (index !== -1) {
+      this.mockDefis[index] = { ...defi };
+    }
+    return of(defi);
+  }
+
+  deleteDefi(id: number): Observable<boolean> {
+    const index = this.mockDefis.findIndex(d => d.id === id);
+    if (index !== -1) {
+      this.mockDefis.splice(index, 1);
+      return of(true);
+    }
+    return of(false);
+  }
 }

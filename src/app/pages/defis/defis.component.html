@@ -1,46 +1,64 @@
 <div class="page-container">
-  @if (showAddDefiPage) {
+  @if (viewMode === 'add' || viewMode === 'edit') {
   <div class="page-header">
     <h1 class="page-title">
-      <i class="fa-solid fa-circle-plus title-icon"></i>
-      Ajouter un nouveau Défi ou Obstacle
+      <i [class]="viewMode === 'add' ? 'fa-solid fa-circle-plus title-icon' : 'fa-solid fa-pen title-icon'"></i>
+      {{ viewMode === 'add' ? 'Ajouter un nouveau Défi ou Obstacle' : 'Modifier le Défi' }}
     </h1>
   </div>
   <div class="defi-form">
     <div class="field-group">
       <p-floatlabel variant="on">
-        <input pInputText id="defi-titre" class="full-width" />
+        <input pInputText id="defi-titre" class="full-width" [(ngModel)]="selectedDefi!.titre" />
         <label for="defi-titre">Titre</label>
       </p-floatlabel>
     </div>
     <div class="field-group">
       <p-floatlabel variant="on">
-        <p-datepicker id="defi-date" [showIcon]="true" dateFormat="yy-mm-dd" styleClass="full-width" />
+        <p-datepicker id="defi-date" [showIcon]="true" dateFormat="yy-mm-dd" styleClass="full-width" [(ngModel)]="selectedDefi!.date" />
         <label for="defi-date">Choisir une date</label>
       </p-floatlabel>
     </div>
     <div class="field-group">
       <p-floatlabel variant="on">
-        <textarea pTextarea id="defi-desc" rows="6" class="full-width"></textarea>
+        <textarea pTextarea id="defi-desc" rows="6" class="full-width" [(ngModel)]="selectedDefi!.description"></textarea>
         <label for="defi-desc">Description</label>
       </p-floatlabel>
     </div>
     <div class="field-group">
       <p-floatlabel variant="on">
-        <textarea pTextarea id="defi-solution" rows="6" class="full-width"></textarea>
+        <textarea pTextarea id="defi-solution" rows="6" class="full-width" [(ngModel)]="selectedDefi!.solutionAppliquee"></textarea>
         <label for="defi-solution">Solution Appliquée</label>
       </p-floatlabel>
     </div>
     <div class="field-group">
       <p-floatlabel variant="on">
-        <textarea pTextarea id="defi-resultat" rows="6" class="full-width"></textarea>
+        <textarea pTextarea id="defi-resultat" rows="6" class="full-width" [(ngModel)]="selectedDefi!.resultat"></textarea>
         <label for="defi-resultat">Résultat</label>
       </p-floatlabel>
     </div>
   </div>
   <div class="form-actions">
     <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showDefiList()" />
-    <p-button label="Ajouter" icon="fa-solid fa-check" (onClick)="showDefiList()" />
+    <p-button label="Sauvegarder" icon="fa-solid fa-check" (onClick)="saveDefi()" />
+  </div>
+  } @else if (viewMode === 'details') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fa-solid fa-circle-info title-icon"></i>
+      Détails du Défi: {{ selectedDefi?.titre }}
+    </h1>
+  </div>
+  <div class="defi-form defi-details" style="display: flex; flex-direction: column; gap: 1.5rem; background: var(--surface-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--surface-border);">
+    <div><strong style="color: var(--text-color-secondary);">Date:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedDefi?.date }}</span></div>
+    <div><strong style="color: var(--text-color-secondary);">Description:</strong><div style="margin-top: 0.5rem; color: var(--text-color); white-space: pre-wrap;">{{ selectedDefi?.description }}</div></div>
+    <div><strong style="color: var(--text-color-secondary);">Solution Appliquée:</strong><div style="margin-top: 0.5rem; color: var(--text-color); white-space: pre-wrap;">{{ selectedDefi?.solutionAppliquee }}</div></div>
+    <div><strong style="color: var(--text-color-secondary);">Résultat:</strong><div style="margin-top: 0.5rem; color: var(--text-color); white-space: pre-wrap;">{{ selectedDefi?.resultat }}</div></div>
+  </div>
+  <div class="form-actions" style="margin-top: 1rem; display: flex; gap: 1rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showDefiList()" />
+    <p-button label="Modifier" icon="fa-solid fa-pen" severity="info" (onClick)="editDefi()" styleClass="p-button-outlined" />
+    <p-button label="Supprimer" icon="fa-solid fa-trash" severity="danger" (onClick)="deleteDefi()" styleClass="p-button-outlined" />
   </div>
   } @else {
   <div class="page-header">
@@ -56,7 +74,9 @@
       [theme]="theme"
       [rowData]="defis"
       [columnDefs]="colDefs"
-      [defaultColDef]="defaultColDef">
+      [defaultColDef]="defaultColDef"
+      (rowClicked)="onRowClicked($event)"
+      [rowSelection]="'single'">
     </ag-grid-angular>
   </div>
   }
