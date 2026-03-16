@@ -11,6 +11,7 @@ import { DefiService } from '../../services/defi/defi-service';
 
 import { AgGridAngular } from 'ag-grid-angular';
 import { AllCommunityModule, ModuleRegistry, type ColDef, themeQuartz } from 'ag-grid-community';
+import {Observable} from 'rxjs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -33,7 +34,7 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 export class DefisComponent implements OnInit {
   defiService = inject(DefiService);
 
-  defis: Defi[] = [];
+  defis$!: Observable<Defi[]>;
 
   viewMode: 'list' | 'add' | 'details' | 'edit' = 'list';
   selectedDefi: Defi | null = null;
@@ -54,7 +55,7 @@ export class DefisComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.loadDefisList();
+    this.defis$ = this.defiService.getDefis();
   }
 
   showAddDefiForm() {
@@ -79,9 +80,8 @@ export class DefisComponent implements OnInit {
   deleteDefi() {
     if (this.selectedDefi && this.selectedDefi.id) {
       this.defiService.deleteDefi(this.selectedDefi.id).subscribe(() => {
-        this.loadDefisList();
-        this.showDefiList();
       });
+      this.viewMode='list';
     }
   }
 
@@ -90,20 +90,12 @@ export class DefisComponent implements OnInit {
 
     if (this.viewMode === 'add') {
       this.defiService.addDefi(this.selectedDefi).subscribe(() => {
-        this.loadDefisList();
-        this.showDefiList();
       });
     } else if (this.viewMode === 'edit') {
       this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
-        this.loadDefisList();
-        this.showDefiList();
       });
     }
-  }
 
-  private loadDefisList() {
-    return this.defiService.getUsers().subscribe(defis => {
-      this.defis = defis;
-    });
+    this.viewMode='list';
   }
 }

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -10,6 +10,8 @@ import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { Objectif, KPI } from '../../models/objectif.model';
+import { ObjectifService } from '../../services/objectif/objectif.service';
+import { KpiService } from '../../services/kpi/kpi.service';
 
 @Component({
     selector: 'app-objectifs',
@@ -28,44 +30,53 @@ import { Objectif, KPI } from '../../models/objectif.model';
     templateUrl: './objectifs.component.html',
     styleUrl: './objectifs.component.css'
 })
-export class ObjectifsComponent {
-    protected objectifs = signal<Objectif[]>([
-        { id: 1, titre: 'Augmenter le rendement des cultures', details: 'Optimiser l\'irrigation et la fertilisation pour améliorer la productivité.', progression: 100 },
-        { id: 2, titre: 'Réduire les coûts opérationnels', details: 'Identifier et éliminer les dépenses inutiles dans la chaîne de production.', progression: 78 },
-        { id: 3, titre: 'Améliorer la qualité des produits', details: 'Mettre en place des contrôles qualité rigoureux à chaque étape.', progression: 30 }
-    ]);
+export class ObjectifsComponent implements OnInit {
+    objectifService = inject(ObjectifService);
+    kpiService = inject(KpiService);
 
-    protected kpis = signal<KPI[]>([
-        { id: 1, indicateur: 'Rendement (t/ha)', objectifMensuel: '5', realise: '5', pourcentage: '100%' },
-        { id: 2, indicateur: 'Coût par unité (€)', objectifMensuel: '2.5', realise: '1.95', pourcentage: '78%' },
-        { id: 3, indicateur: 'Taux de qualité (%)', objectifMensuel: '95', realise: '28.5', pourcentage: '30%' },
-        { id: 4, indicateur: 'Surface traitée (ha)', objectifMensuel: '', realise: '', pourcentage: '' }
-    ]);
+    protected objectifs = signal<Objectif[]>([]);
+    protected kpis = signal<KPI[]>([]);
 
-    private objectifCounter = 4;
-    private kpiCounter = 5;
+    ngOnInit(): void {
+        this.loadObjectifs();
+        this.loadKpis();
+    }
+
+    private loadObjectifs(): void {
+        this.objectifService.getObjectifs().subscribe(data => this.objectifs.set(data));
+    }
+
+    private loadKpis(): void {
+        this.kpiService.getKpis().subscribe(data => this.kpis.set(data));
+    }
 
     ajouterObjectif(): void {
-        const nouveauxObjectifs = [...this.objectifs()];
-        nouveauxObjectifs.push({
-            id: this.objectifCounter++,
+        const nouvelObjectif: Objectif = {
+            id: 0,
             titre: '',
             details: '',
             progression: 0
+        };
+        this.objectifService.addObjectif(nouvelObjectif).subscribe(created => {
+            const nouveauxObjectifs = [...this.objectifs()];
+            nouveauxObjectifs.push(created);
+            this.objectifs.set(nouveauxObjectifs);
         });
-        this.objectifs.set(nouveauxObjectifs);
     }
 
     ajouterKPI(): void {
-        const nouveauxKPIs = [...this.kpis()];
-        nouveauxKPIs.push({
-            id: this.kpiCounter++,
+        const nouveauKpi: KPI = {
+            id: 0,
             indicateur: '',
             objectifMensuel: '',
             realise: '',
             pourcentage: ''
+        };
+        this.kpiService.addKpi(nouveauKpi).subscribe(created => {
+            const nouveauxKPIs = [...this.kpis()];
+            nouveauxKPIs.push(created);
+            this.kpis.set(nouveauxKPIs);
         });
-        this.kpis.set(nouveauxKPIs);
     }
 
     calculerPourcentage(kpi: KPI): void {
