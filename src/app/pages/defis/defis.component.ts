@@ -10,7 +10,7 @@ import { Defi } from '../../models/defi.model';
 import { DefiService } from '../../services/defi/defi-service';
 
 import { AgGridAngular } from 'ag-grid-angular';
-import { AllCommunityModule, ModuleRegistry, type ColDef, themeQuartz } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, type ColDef, themeQuartz, GridReadyEvent, IDatasource, IGetRowsParams, GridApi } from 'ag-grid-community';
 import {Observable} from 'rxjs';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -35,7 +35,7 @@ export class DefisComponent implements OnInit {
   defiService = inject(DefiService);
   cdr = inject(ChangeDetectorRef);
 
-  defis: Defi[] = [];
+  private gridApi!: GridApi;
 
   viewMode: 'list' | 'add' | 'details' | 'edit' = 'list';
   selectedDefi: Defi | null = null;
@@ -55,12 +55,27 @@ export class DefisComponent implements OnInit {
     filterParams: { buttons: ['clear', 'apply'], closeOnApply: true }
   };
 
-
   ngOnInit(): void {
-    this.defiService.getDefis().subscribe(defis=>{
-      this.defis = [...defis];
-      this.cdr.detectChanges();
-    });
+  }
+
+  onGridReady(params: GridReadyEvent) {
+    this.gridApi = params.api;
+    const dataSource: IDatasource = {
+      getRows: (params: IGetRowsParams) => {
+        const page = Math.floor(params.startRow / 10);
+        const size = 10;
+        
+        this.defiService.getDefis(page, size).subscribe({
+          next: (res) => {
+            params.successCallback(res.content, res.totalElements);
+          },
+          error: () => {
+            params.failCallback();
+          }
+        });
+      }
+    };
+    params.api.setGridOption('datasource', dataSource);
   }
 
   showAddDefiForm() {
@@ -85,6 +100,9 @@ export class DefisComponent implements OnInit {
   deleteDefi() {
     if (this.selectedDefi && this.selectedDefi.id) {
       this.defiService.deleteDefi(this.selectedDefi.id).subscribe(() => {
+        if (this.gridApi) {
+          this.gridApi.refreshInfiniteCache();
+        }
       });
       this.viewMode='list';
     }
@@ -95,17 +113,15 @@ export class DefisComponent implements OnInit {
 
     if (this.viewMode === 'add') {
       this.defiService.addDefi(this.selectedDefi).subscribe(() => {
-        this.defiService.getDefis().subscribe(defis=>{
-          this.defis = [...defis];
-          this.cdr.detectChanges();
-        });
+        if (this.gridApi) {
+          this.gridApi.refreshInfiniteCache();
+        }
       });
     } else if (this.viewMode === 'edit') {
       this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
-        this.defiService.getDefis().subscribe(defis=>{
-          this.defis = [...defis];
-          this.cdr.detectChanges();
-        });
+        if (this.gridApi) {
+          this.gridApi.refreshInfiniteCache();
+        }
       });
     }
 

@@ -68,18 +68,19 @@
     </h1>
     <p-button label="Ajouter Défi" icon="fa-solid fa-plus" (onClick)="showAddDefiForm()" />
   </div>
-  <div class="grid-container" style="height: 600px; width: 100%; margin-top: 1rem;">
+  <div class="grid-container" style="height: 530px; width: 100%; margin-top: 1rem;">
     <ag-grid-angular
       style="width: 100%; height: 100%;"
       [theme]="theme"
-      [rowData]="defis"
       [columnDefs]="colDefs"
       [defaultColDef]="defaultColDef"
       (rowClicked)="onRowClicked($event)"
       [rowSelection]="'single'"
       [pagination]="true"
       [paginationPageSize]="10"
-      [paginationPageSizeSelector]="[10, 20, 50]">
+      [rowModelType]="'infinite'"
+      [cacheBlockSize]="10"
+      (gridReady)="onGridReady($event)">
     </ag-grid-angular>
   </div>
   }
