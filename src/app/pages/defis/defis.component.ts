@@ -44,7 +44,7 @@ export class DefisComponent implements OnInit {
 
   colDefs: ColDef[] = [
     { field: 'titre', headerName: 'Titre', minWidth: 150 },
-    { field: 'date', headerName: 'Date', width: 150 },
+    { field: 'date', headerName: 'Date', width: 150, sort: 'desc' },
     { field: 'description', headerName: 'Description', flex: 1, minWidth: 200 },
     { field: 'solutionAppliquee', headerName: 'Solution Appliquée', flex: 1, minWidth: 200 },
     { field: 'resultat', headerName: 'Résultat', flex: 1, minWidth: 150 }
@@ -58,7 +58,7 @@ export class DefisComponent implements OnInit {
 
   ngOnInit(): void {
     this.defiService.getDefis().subscribe(defis=>{
-      this.defis = defis;
+      this.defis = [...defis];
       this.cdr.detectChanges();
     });
   }
@@ -96,14 +96,14 @@ export class DefisComponent implements OnInit {
     if (this.viewMode === 'add') {
       this.defiService.addDefi(this.selectedDefi).subscribe(() => {
         this.defiService.getDefis().subscribe(defis=>{
-          this.defis = defis;
+          this.defis = [...defis];
           this.cdr.detectChanges();
         });
       });
     } else if (this.viewMode === 'edit') {
       this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
         this.defiService.getDefis().subscribe(defis=>{
-          this.defis = defis;
+          this.defis = [...defis];
           this.cdr.detectChanges();
         });
       });
