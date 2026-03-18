@@ -76,7 +76,10 @@
       [columnDefs]="colDefs"
       [defaultColDef]="defaultColDef"
       (rowClicked)="onRowClicked($event)"
-      [rowSelection]="'single'">
+      [rowSelection]="'single'"
+      [pagination]="true"
+      [paginationPageSize]="10"
+      [paginationPageSizeSelector]="[10, 20, 50]">
     </ag-grid-angular>
   </div>
   }
