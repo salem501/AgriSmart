@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -33,8 +33,9 @@ ModuleRegistry.registerModules([AllCommunityModule]);
 })
 export class DefisComponent implements OnInit {
   defiService = inject(DefiService);
+  cdr = inject(ChangeDetectorRef);
 
-  defis$!: Observable<Defi[]>;
+  defis: Defi[] = [];
 
   viewMode: 'list' | 'add' | 'details' | 'edit' = 'list';
   selectedDefi: Defi | null = null;
@@ -54,8 +55,12 @@ export class DefisComponent implements OnInit {
     filterParams: { buttons: ['clear', 'apply'], closeOnApply: true }
   };
 
+
   ngOnInit(): void {
-    this.defis$ = this.defiService.getDefis();
+    this.defiService.getDefis().subscribe(defis=>{
+      this.defis = defis;
+      this.cdr.detectChanges();
+    });
   }
 
   showAddDefiForm() {
@@ -90,9 +95,17 @@ export class DefisComponent implements OnInit {
 
     if (this.viewMode === 'add') {
       this.defiService.addDefi(this.selectedDefi).subscribe(() => {
+        this.defiService.getDefis().subscribe(defis=>{
+          this.defis = defis;
+          this.cdr.detectChanges();
+        });
       });
     } else if (this.viewMode === 'edit') {
       this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
+        this.defiService.getDefis().subscribe(defis=>{
+          this.defis = defis;
+          this.cdr.detectChanges();
+        });
       });
     }
 
