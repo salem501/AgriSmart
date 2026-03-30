@@ -36,4 +36,8 @@ export class DefiService {
   deleteDefi(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+
+  downloadReport(): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/report`, { responseType: 'blob' });
+  }
 }

@@ -83,6 +83,17 @@ export class DefisComponent implements OnInit {
     this.viewMode = 'add';
   }
 
+  generateReport() {
+    this.defiService.downloadReport().subscribe((blob: Blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'rapport-defis.pdf';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
+
   showDefiList() {
     this.viewMode = 'list';
     this.selectedDefi = null;
