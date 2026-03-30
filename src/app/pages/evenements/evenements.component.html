@@ -52,7 +52,10 @@
       <i class="fa-solid fa-calendar title-icon"></i>
       Événements &amp; Activités
     </h1>
-    <p-button label="Ajouter Événement" icon="fa-solid fa-plus" (onClick)="showAddEvenementForm()" />
+    <div style="display: flex; gap: 1rem;">
+      <p-button label="Générer le rapport" icon="fa-solid fa-file-pdf" severity="help" [outlined]="true" (onClick)="generateReport()" />
+      <p-button label="Ajouter Événement" icon="fa-solid fa-plus" (onClick)="showAddEvenementForm()" />
+    </div>
   </div>
   <div class="grid-container" style="height: 600px; width: 100%; margin-top: 1rem;">
     <ag-grid-angular

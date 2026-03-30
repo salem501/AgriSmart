@@ -67,6 +67,17 @@ export class EvenementsComponent implements OnInit {
         this.viewMode = 'add';
     }
 
+    generateReport() {
+        this.evenementService.downloadReport().subscribe((blob: Blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rapport-evenements.pdf';
+            a.click();
+            window.URL.revokeObjectURL(url);
+        });
+    }
+
     showEvenementsList() {
         this.viewMode = 'list';
         this.selectedEvenement = null;
