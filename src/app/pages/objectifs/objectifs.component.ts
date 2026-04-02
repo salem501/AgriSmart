@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
-import { ProgressBar } from 'primeng/progressbar';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -25,7 +24,6 @@ type ViewMode = 'list' | 'add_objectif' | 'edit_objectif' | 'details_objectif' |
         FormsModule,
         InputTextModule,
         TextareaModule,
-        ProgressBar,
         ButtonModule,
         TagModule,
         FloatLabelModule,
@@ -77,21 +75,29 @@ export class ObjectifsComponent implements OnInit {
     loadObjectifs() {
         this.objectifService.getObjectifs().subscribe(data => {
             this.objectifsList = data;
+            if (this.gridApiObjectifs) {
+                this.gridApiObjectifs.setGridOption('rowData', data);
+            }
         });
     }
 
     loadKpis() {
         this.kpiService.getKpis().subscribe(data => {
             this.kpisList = data;
+            if (this.gridApiKpis) {
+                this.gridApiKpis.setGridOption('rowData', data);
+            }
         });
     }
 
     onGridReadyObjectifs(params: GridReadyEvent) {
         this.gridApiObjectifs = params.api;
+        params.api.setGridOption('rowData', this.objectifsList);
     }
 
     onGridReadyKpis(params: GridReadyEvent) {
         this.gridApiKpis = params.api;
+        params.api.setGridOption('rowData', this.kpisList);
     }
 
     showList() {
