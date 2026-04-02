@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -11,7 +11,7 @@ import { Evenement } from '../../models/evenement.model';
 import { EvenementService } from '../../services/evenement/evenement.service';
 
 import { AgGridAngular } from 'ag-grid-angular';
-import { AllCommunityModule, ModuleRegistry, type ColDef, themeQuartz } from 'ag-grid-community';
+import { AllCommunityModule, ModuleRegistry, type ColDef, themeQuartz, GridReadyEvent, IDatasource, IGetRowsParams, GridApi } from 'ag-grid-community';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -29,12 +29,14 @@ ModuleRegistry.registerModules([AllCommunityModule]);
         AgGridAngular
     ],
     templateUrl: './evenements.component.html',
+    standalone: true,
     styleUrl: './evenements.component.css'
 })
 export class EvenementsComponent implements OnInit {
     evenementService = inject(EvenementService);
+    cdr = inject(ChangeDetectorRef);
 
-    evenements: Evenement[] = [];
+    private gridApi!: GridApi;
 
     viewMode: 'list' | 'add' | 'details' | 'edit' = 'list';
     selectedEvenement: Evenement | null = null;
@@ -53,13 +55,26 @@ export class EvenementsComponent implements OnInit {
     };
 
     ngOnInit(): void {
-        this.loadEvenementsList();
     }
 
-    private loadEvenementsList() {
-        return this.evenementService.getEvenements().subscribe(events => {
-            this.evenements = events;
-        });
+    onGridReady(params: GridReadyEvent) {
+        this.gridApi = params.api;
+        const dataSource: IDatasource = {
+            getRows: (params: IGetRowsParams) => {
+                const page = Math.floor(params.startRow / 10);
+                const size = 10;
+                
+                this.evenementService.getEvenements(page, size).subscribe({
+                    next: (res) => {
+                        params.successCallback(res.content, res.totalElements);
+                    },
+                    error: () => {
+                        params.failCallback();
+                    }
+                });
+            }
+        };
+        params.api.setGridOption('datasource', dataSource);
     }
 
     showAddEvenementForm() {
@@ -95,9 +110,11 @@ export class EvenementsComponent implements OnInit {
     deleteEvenement() {
         if (this.selectedEvenement && this.selectedEvenement.id) {
             this.evenementService.deleteEvenement(this.selectedEvenement.id).subscribe(() => {
-                this.loadEvenementsList();
-                this.showEvenementsList();
+                if (this.gridApi) {
+                    this.gridApi.refreshInfiniteCache();
+                }
             });
+            this.showEvenementsList();
         }
     }
 
@@ -106,14 +123,18 @@ export class EvenementsComponent implements OnInit {
 
         if (this.viewMode === 'add') {
             this.evenementService.addEvenement(this.selectedEvenement).subscribe(() => {
-                this.loadEvenementsList();
-                this.showEvenementsList();
+                if (this.gridApi) {
+                    this.gridApi.refreshInfiniteCache();
+                }
             });
         } else if (this.viewMode === 'edit') {
             this.evenementService.updateEvenement(this.selectedEvenement).subscribe(() => {
-                this.loadEvenementsList();
-                this.showEvenementsList();
+                if (this.gridApi) {
+                    this.gridApi.refreshInfiniteCache();
+                }
             });
         }
+        
+        this.showEvenementsList();
     }
 }

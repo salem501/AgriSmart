@@ -61,11 +61,15 @@
     <ag-grid-angular
       style="width: 100%; height: 100%;"
       [theme]="theme"
-      [rowData]="evenements"
       [columnDefs]="colDefs"
       [defaultColDef]="defaultColDef"
       (rowClicked)="onRowClicked($event)"
-      [rowSelection]="'single'">
+      [rowSelection]="'single'"
+      [pagination]="true"
+      [paginationPageSize]="10"
+      [rowModelType]="'infinite'"
+      [cacheBlockSize]="10"
+      (gridReady)="onGridReady($event)">
     </ag-grid-angular>
   </div>
   }
