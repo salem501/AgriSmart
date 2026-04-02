@@ -110,11 +110,9 @@ export class EvenementsComponent implements OnInit {
     deleteEvenement() {
         if (this.selectedEvenement && this.selectedEvenement.id) {
             this.evenementService.deleteEvenement(this.selectedEvenement.id).subscribe(() => {
-                if (this.gridApi) {
-                    this.gridApi.refreshInfiniteCache();
-                }
+                this.showEvenementsList();
+                this.cdr.detectChanges();
             });
-            this.showEvenementsList();
         }
     }
 
@@ -123,18 +121,14 @@ export class EvenementsComponent implements OnInit {
 
         if (this.viewMode === 'add') {
             this.evenementService.addEvenement(this.selectedEvenement).subscribe(() => {
-                if (this.gridApi) {
-                    this.gridApi.refreshInfiniteCache();
-                }
+                this.showEvenementsList();
+                this.cdr.detectChanges();
             });
         } else if (this.viewMode === 'edit') {
             this.evenementService.updateEvenement(this.selectedEvenement).subscribe(() => {
-                if (this.gridApi) {
-                    this.gridApi.refreshInfiniteCache();
-                }
+                this.showEvenementsList();
+                this.cdr.detectChanges();
             });
         }
-        
-        this.showEvenementsList();
     }
 }

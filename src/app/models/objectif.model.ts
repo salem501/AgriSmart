@@ -1,12 +1,12 @@
 export interface Objectif {
-    id: number;
+    id?: number;
     titre: string;
     details: string;
     progression: number;
 }
 
 export interface KPI {
-    id: number;
+    id?: number;
     indicateur: string;
     objectifMensuel: string;
     realise: string;

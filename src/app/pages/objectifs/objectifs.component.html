@@ -1,97 +1,155 @@
 <div class="page-container">
+  @if (viewMode === 'add_objectif' || viewMode === 'edit_objectif') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i [class]="viewMode === 'add_objectif' ? 'fa-solid fa-circle-plus title-icon' : 'fa-solid fa-pen title-icon'"></i>
+      {{ viewMode === 'add_objectif' ? 'Ajouter un Objectif' : 'Modifier Objectif' }}
+    </h1>
+  </div>
+  <div class="objectif-form">
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="titre" class="full-width" [(ngModel)]="selectedObjectif!.titre" />
+        <label for="titre">Titre de l'objectif</label>
+      </p-floatlabel>
+    </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input type="number" pInputText id="progression" class="full-width" [(ngModel)]="selectedObjectif!.progression" />
+        <label for="progression">Progression (%)</label>
+      </p-floatlabel>
+    </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <textarea pTextarea id="details" rows="6" class="full-width" [(ngModel)]="selectedObjectif!.details"></textarea>
+        <label for="details">Détails</label>
+      </p-floatlabel>
+    </div>
+  </div>
+  <div class="form-actions" style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showList()" />
+    <p-button label="Sauvegarder" icon="fa-solid fa-check" (onClick)="saveObjectif()" />
+  </div>
+
+  } @else if (viewMode === 'details_objectif') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fa-solid fa-circle-info title-icon"></i>
+      Détails Objectif: {{ selectedObjectif?.titre }}
+    </h1>
+  </div>
+  <div class="details-card" style="display: flex; flex-direction: column; gap: 1.5rem; background: var(--surface-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--surface-border);">
+    <div><strong style="color: var(--text-color-secondary);">Progression:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedObjectif?.progression }}%</span></div>
+    <div><strong style="color: var(--text-color-secondary);">Détails:</strong><div style="margin-top: 0.5rem; color: var(--text-color); white-space: pre-wrap;">{{ selectedObjectif?.details }}</div></div>
+  </div>
+  <div class="form-actions" style="margin-top: 1rem; display: flex; gap: 1rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showList()" />
+    <p-button label="Modifier" icon="fa-solid fa-pen" severity="info" (onClick)="editObjectif()" styleClass="p-button-outlined" />
+    <p-button label="Supprimer" icon="fa-solid fa-trash" severity="danger" (onClick)="deleteObjectif()" styleClass="p-button-outlined" />
+  </div>
+
+  } @else if (viewMode === 'add_kpi' || viewMode === 'edit_kpi') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i [class]="viewMode === 'add_kpi' ? 'fa-solid fa-circle-plus title-icon' : 'fa-solid fa-pen title-icon'"></i>
+      {{ viewMode === 'add_kpi' ? 'Ajouter KPI' : 'Modifier KPI' }}
+    </h1>
+  </div>
+  <div class="kpi-form">
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="indicateur" class="full-width" [(ngModel)]="selectedKpi!.indicateur" />
+        <label for="indicateur">Indicateur</label>
+      </p-floatlabel>
+    </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="objectifMensuel" class="full-width" [(ngModel)]="selectedKpi!.objectifMensuel" (ngModelChange)="calculerPourcentage()" />
+        <label for="objectifMensuel">Objectif Mensuel</label>
+      </p-floatlabel>
+    </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="realise" class="full-width" [(ngModel)]="selectedKpi!.realise" (ngModelChange)="calculerPourcentage()" />
+        <label for="realise">Réalisé</label>
+      </p-floatlabel>
+    </div>
+    <div class="field-group">
+      <p-floatlabel variant="on">
+        <input pInputText id="percentage" class="full-width" [(ngModel)]="selectedKpi!.pourcentage" disabled />
+        <label for="percentage">% Réalisation</label>
+      </p-floatlabel>
+    </div>
+  </div>
+  <div class="form-actions" style="display: flex; justify-content: space-between; margin-top: 1.5rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showList()" />
+    <p-button label="Sauvegarder" icon="fa-solid fa-check" (onClick)="saveKpi()" />
+  </div>
+
+  } @else if (viewMode === 'details_kpi') {
+  <div class="page-header">
+    <h1 class="page-title">
+      <i class="fa-solid fa-circle-info title-icon"></i>
+      Détails KPI: {{ selectedKpi?.indicateur }}
+    </h1>
+  </div>
+  <div class="details-card" style="display: flex; flex-direction: column; gap: 1.5rem; background: var(--surface-card); padding: 2rem; border-radius: 1rem; border: 1px solid var(--surface-border);">
+    <div><strong style="color: var(--text-color-secondary);">Objectif Mensuel:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedKpi?.objectifMensuel }}</span></div>
+    <div><strong style="color: var(--text-color-secondary);">Réalisé:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedKpi?.realise }}</span></div>
+    <div><strong style="color: var(--text-color-secondary);">% Réalisation:</strong> <span style="margin-left: 0.5rem; color: var(--text-color);">{{ selectedKpi?.pourcentage }}</span></div>
+  </div>
+  <div class="form-actions" style="margin-top: 1rem; display: flex; gap: 1rem;">
+    <p-button label="Retour" icon="fa-solid fa-arrow-left" severity="secondary" [outlined]="true" (onClick)="showList()" />
+    <p-button label="Modifier" icon="fa-solid fa-pen" severity="info" (onClick)="editKpi()" styleClass="p-button-outlined" />
+    <p-button label="Supprimer" icon="fa-solid fa-trash" severity="danger" (onClick)="deleteKpi()" styleClass="p-button-outlined" />
+  </div>
+
+  } @else {
+  <!-- LIST MODE -->
   <div class="page-header">
     <h1 class="page-title">
       <i class="fa-solid fa-flag title-icon"></i>
-      Objectifs Mensuels &amp; KPIs
+      Objectifs Mensuels
     </h1>
-    <p-button label="Ajouter Objectif" icon="fa-solid fa-plus" (onClick)="ajouterObjectif()" />
+    <p-button label="Ajouter Objectif" icon="fa-solid fa-plus" (onClick)="showAddObjectifForm()" />
+  </div>
+  
+  <div class="grid-container" style="height: 300px; width: 100%; margin-top: 1rem;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [theme]="theme"
+      [rowData]="objectifsList"
+      [columnDefs]="colDefsObjectifs"
+      [defaultColDef]="defaultColDef"
+      (rowClicked)="onObjectifRowClicked($event)"
+      [rowSelection]="'single'"
+      [pagination]="true"
+      [paginationPageSize]="5"
+      (gridReady)="onGridReadyObjectifs($event)">
+    </ag-grid-angular>
   </div>
 
-  <!-- Objectifs Cards -->
-  <div class="objectifs-grid">
-    @for (objectif of objectifs(); track objectif.id) {
-    <p-card styleClass="objectif-card">
-      <ng-template #header>
-        <div class="card-header-content">
-          <div class="card-title-row">
-            <i class="fa-solid fa-bullseye card-icon"></i>
-            <span class="card-title">Objectif {{ objectif.id }}</span>
-          </div>
-          <p-tag [value]="objectif.progression + '% réalisé'" [severity]="getTagSeverity(objectif.progression)" />
-        </div>
-      </ng-template>
-
-      <div class="field-group">
-        <p-floatlabel variant="on">
-          <input pInputText id="titre-{{objectif.id}}" [(ngModel)]="objectif.titre" class="full-width" />
-          <label for="titre-{{objectif.id}}">Titre de l'objectif</label>
-        </p-floatlabel>
-      </div>
-
-      <div class="field-group">
-        <p-floatlabel variant="on">
-          <textarea pTextarea id="details-{{objectif.id}}" [(ngModel)]="objectif.details" rows="3"
-            class="full-width"></textarea>
-          <label for="details-{{objectif.id}}">Détails</label>
-        </p-floatlabel>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-header">
-          <span class="progress-label">Progression</span>
-          <span class="progress-value">{{ objectif.progression }}%</span>
-        </div>
-        <p-progressbar [value]="objectif.progression" [showValue]="false" styleClass="custom-progressbar" />
-      </div>
-    </p-card>
-    }
+  <div class="page-header" style="margin-top: 2rem;">
+    <h1 class="page-title">
+      <i class="fa-solid fa-chart-line title-icon"></i>
+      Indicateurs de Performance (KPIs)
+    </h1>
+    <p-button label="Ajouter KPI" icon="fa-solid fa-plus" severity="secondary" (onClick)="showAddKpiForm()" />
   </div>
 
-  <p-divider />
-
-  <!-- KPIs Section -->
-  <div class="kpis-section">
-    <div class="section-header">
-      <h2 class="section-title">
-        <i class="fa-solid fa-chart-bar title-icon"></i>
-        Indicateurs de Performance (KPIs)
-      </h2>
-      <p-button label="Ajouter KPI" icon="fa-solid fa-plus" severity="secondary" (onClick)="ajouterKPI()" />
-    </div>
-
-    <div class="table-card">
-      <div class="table-responsive">
-        <table class="kpi-table">
-          <thead>
-            <tr>
-              <th>Indicateur</th>
-              <th>Objectif Mensuel</th>
-              <th>Réalisé</th>
-              <th>% Réalisation</th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (kpi of kpis(); track kpi.id) {
-            <tr>
-              <td>
-                <input pInputText [(ngModel)]="kpi.indicateur" placeholder="Indicateur" class="table-input" />
-              </td>
-              <td>
-                <input pInputText [(ngModel)]="kpi.objectifMensuel" (input)="calculerPourcentage(kpi)"
-                  placeholder="Objectif" class="table-input" />
-              </td>
-              <td>
-                <input pInputText [(ngModel)]="kpi.realise" (input)="calculerPourcentage(kpi)"
-                  placeholder="Réalisé" class="table-input" />
-              </td>
-              <td>
-                <p-tag [value]="kpi.pourcentage || '—'" [severity]="kpi.pourcentage ? 'info' : 'secondary'" />
-              </td>
-            </tr>
-            }
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <div class="grid-container" style="height: 300px; width: 100%; margin-top: 1rem; margin-bottom: 2rem;">
+    <ag-grid-angular
+      style="width: 100%; height: 100%;"
+      [theme]="theme"
+      [rowData]="kpisList"
+      [columnDefs]="colDefsKpis"
+      [defaultColDef]="defaultColDef"
+      (rowClicked)="onKpiRowClicked($event)"
+      [rowSelection]="'single'"
+      [pagination]="true"
+      [paginationPageSize]="5"
+      (gridReady)="onGridReadyKpis($event)">
+    </ag-grid-angular>
   </div>
+  }
 </div>

@@ -111,11 +111,9 @@ export class DefisComponent implements OnInit {
   deleteDefi() {
     if (this.selectedDefi && this.selectedDefi.id) {
       this.defiService.deleteDefi(this.selectedDefi.id).subscribe(() => {
-        if (this.gridApi) {
-          this.gridApi.refreshInfiniteCache();
-        }
+        this.showDefiList();
+        this.cdr.detectChanges();
       });
-      this.viewMode='list';
     }
   }
 
@@ -124,18 +122,14 @@ export class DefisComponent implements OnInit {
 
     if (this.viewMode === 'add') {
       this.defiService.addDefi(this.selectedDefi).subscribe(() => {
-        if (this.gridApi) {
-          this.gridApi.refreshInfiniteCache();
-        }
+        this.showDefiList();
+        this.cdr.detectChanges();
       });
     } else if (this.viewMode === 'edit') {
       this.defiService.updateDefi(this.selectedDefi).subscribe(() => {
-        if (this.gridApi) {
-          this.gridApi.refreshInfiniteCache();
-        }
+        this.showDefiList();
+        this.cdr.detectChanges();
       });
     }
-
-    this.viewMode='list';
   }
 }
